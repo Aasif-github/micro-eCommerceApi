@@ -22,3 +22,21 @@ https://github.com/REALSTEVEIG/REST-API-WITH-TYPESCRIPT-NODEJS-AND-A-FILE-BASED-
 #
 # 5. npm start
 
+OR
+
+# 1. npm i -D ts-node-dev
+
+# 2. package.json 
+# "scripts": {
+# "test": "echo \"Error: no test specified\" && exit 1",
+# "dev": "ts-node-dev --pretty --respawn ./src/app.ts"
+# },
+
+# --respawn: Keep watching for changes after the script has exited.
+
+# --pretty: Use pretty diagnostic formatter (TS_NODE_PRETTY).
+
+#  ./src/app.ts: This is the application's entry file.
+
+# 3. npm run dev
+
