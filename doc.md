@@ -11,17 +11,18 @@ https://github.com/REALSTEVEIG/REST-API-WITH-TYPESCRIPT-NODEJS-AND-A-FILE-BASED-
 */
 
 # Automation
-# 1. npm install ts-node --save-dev
-# 2. npm install typescript --save-dev
-# 3. npm install nodemon --save-dev
-# 4. In package.json 
-#
-# "scripts": {
-#  "start": "nodemon --exec ts-node src/index.ts"
-# }
-#
-# 5. npm start
+```
+ 1. npm install ts-node --save-dev
+ 2. npm install typescript --save-dev
+ 3. npm install nodemon --save-dev
+ 4. In package.json 
 
+"scripts": {
+  "start": "nodemon --exec ts-node src/index.ts"
+ }
+
+ 5. npm start
+```
 OR
 
 # 1. npm i -D ts-node-dev
