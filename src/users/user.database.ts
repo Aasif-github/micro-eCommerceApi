@@ -1,30 +1,35 @@
 import { User, UnitUser, Users } from "./user.interface";
-import bcrypt from "bcryptjs"
-import {v4 as random} from "uuid"
-import fs from "fs"
-import { log } from "console";
+import bcrypt from "bcryptjs";
+import { v4 as random } from "uuid";
+import fs from "fs";
 
- 
-let users: Users = loadUsers(); 
 
- 
-function loadUsers () : Users {
-    try {
-      const data = fs.readFileSync("./users.json", "utf-8")
-      return JSON.parse(data)
-    } catch (error) {
-      console.log(`Error ${error}`)
-      return {}
-    }
-  }
+/*
+1. Read data from a file - 'users.json' if not create file.
+2. It attempts to parse the data as JSON and returns it as the users object.
+3.If an error occurs during the process, it logs the error and returns an empty object
+*/
 
-function saveUsers () {
-    try {
-      fs.writeFileSync("./users.json", JSON.stringify(users), "utf-8")
-      console.log(`User saved successfully!`)
-    } catch (error) {
-      console.log(`Error : ${error}`)
-    }
-  }
+let users:Users = loadUsers();
 
-export const findAll = async (): Promise<UnitUser[]> => Object.values(users);
+function loadUsers():Users {
+    
+  try {
+    const path = require('path');
+    const filePath = '../../users.json';
+    console.log('isvalid:',filePath);
+    return {}
+  } catch (error) {
+    console.log(`Error ${error}`);
+    return {}
+  } 
+}
+
+function saveUsers(){
+
+}
+
+export {
+  loadUsers,
+  saveUsers
+}

@@ -1,20 +1,18 @@
-import express, {Request, Response} from "express"
-import { UnitUser, User } from "./user.interface"
+import express, { Request, Response, Router } from 'express';
 import {StatusCodes} from "http-status-codes"
-import * as database from "./user.database"
+import * as database from './user.database';
+import { User, UnitUser } from './user.interface';
 
 export const userRouter = express.Router();
 
-userRouter.get("/users", async (req : Request, res : Response) => {
+userRouter.get('/getUser', async(req:Request, res:Response)=>{
+    
     try {
-        const allUsers : UnitUser[] = await database.findAll()
-
-        if (!allUsers) {
-            return res.status(StatusCodes.NOT_FOUND).json({msg : `No users at this time..`})
-        }
-
-        return res.status(StatusCodes.OK).json({total_user : allUsers.length, allUsers})
+        // const users:UnitUser = await database.loadUsers();    
+        return res.status(200).send({'msg':'users loaded'})
     } catch (error) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({error})
+        console.log(error)
+        return res.send(500).send({msg:error});
     }
-})
+    
+});

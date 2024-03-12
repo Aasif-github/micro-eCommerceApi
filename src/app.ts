@@ -23,7 +23,7 @@ app.use(helmet())
 
 
 //defining Routes
-app.use('/', userRouter);
+app.use('/user', userRouter);
 
 
 app.listen(PORT, () => {

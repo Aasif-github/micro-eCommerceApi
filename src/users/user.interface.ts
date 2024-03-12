@@ -1,19 +1,14 @@
-export interface User{
+export interface User{    
     username: string,
-    email: string,
+    email:string,
     password: string
 }
 
 export interface UnitUser extends User{
-    id: string
+    id:string
 }
 
-/*
-The Users interface represents a collection of user objects, 
-where the keys are strings and 
-the values are UnitUser objects.
-*/ 
-
+// here, Key of Users-Object can be string. and value are of UnitUser type ie.[Object-type].which means each user object in the collection should conform to the UnitUser interface.
 export interface Users{
-    [key: string] : UnitUser
+    [key: string]: UnitUser
 }
