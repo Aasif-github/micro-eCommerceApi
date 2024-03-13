@@ -1,0 +1,20 @@
+{
+    "5ce01a4f-bfc3-4f3c-8dab-703e03e12c00": {
+        "id": "5ce01a4f-bfc3-4f3c-8dab-703e03e12c00",
+        "username": "updated stephen",
+        "email": "updatedstephenignatiusbiz@gmail.com",
+        "password": "$2a$10$/AMDJpgSlcl85yXeGqq6nOemC3Ja0mObtef4YdFgSVuhxwNrdRaJu"
+    },
+    "94b281e7-9c0c-489b-8eef-25306dbb776d": {
+        "id": "94b281e7-9c0c-489b-8eef-25306dbb776d",
+        "username": "test",
+        "email": "test@sample.com",
+        "password": "$2a$10$gxpcJHmMysi65XhRPWO70OwzN64bGFawqqw2gw9GdW9Uh9lUVrKBa"
+    },
+    "e931bed5-358d-40d3-b04a-ddbbe072ea0d": {
+        "id": "e931bed5-358d-40d3-b04a-ddbbe072ea0d",
+        "username": "sarfaraz",
+        "email": "sfz@sample.com",
+        "password": "$2a$10$zVpW8YVswYMaTQtFX52kuuS/b4PDbPjsnhCvryYJjTqbbDmwQ5zRW"
+    }
+}
