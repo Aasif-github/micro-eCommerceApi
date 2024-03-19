@@ -11,6 +11,8 @@ https://github.com/REALSTEVEIG/REST-API-WITH-TYPESCRIPT-NODEJS-AND-A-FILE-BASED-
 @ authentication 
 */
 
+https://github.com/sayedazharsabri/Quiz-App-REST-API-TS-Mongoose/blob/master/backend/src/routes/quiz.ts
+
 # Automation
 ```
  1. npm install ts-node --save-dev

@@ -68,3 +68,34 @@ userRouter.post('/registration', async(req:Request, res:Response) => {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({error})
     }
 })
+
+
+userRouter.post('/checkPwd', async (req:Request, res:Response) => {
+    try{
+        const {email, password} = req.body;
+        console.log(email, password);
+
+        if(!email || !password){
+            return res.status(StatusCodes.BAD_REQUEST)
+            .json({error : `Please provide all the required parameters..`});
+        }
+
+        const user = await database.findByEmail(email);
+      
+        if(!user){
+            return res.status(StatusCodes.NOT_FOUND).json({error:`No User Found`});
+        }
+
+        const isPasswordVarified = await database.comparePassword(email, password);
+        //res.send(user);
+        console.log(user);
+
+        if(isPasswordVarified){
+            return res.status(StatusCodes.OK).json({'msg':'Password Match'});
+        }
+        return res.status(StatusCodes.FORBIDDEN).json({error:`Unauthoriresed`});
+    }catch(error){
+        console.log(error)
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({error})
+    }
+})

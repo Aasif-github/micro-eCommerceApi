@@ -2,6 +2,7 @@ import { User, UnitUser, Users } from "./user.interface";
 import bcrypt from "bcryptjs";
 import { v4 as random } from "uuid";
 import fs from "fs";
+import { decrypt } from "dotenv";
 
 
 /*
@@ -107,6 +108,27 @@ export function saveUsers(){
 
     users[id] = user;
     saveUsers();
+
+  return user;
+ }
+
+ /*
+ Compare Password:
+ This function takes an email and supplied_password as parameters and returns a promise that resolves to a UnitUser object if the supplied password matches the user's stored password, or null otherwise. It calls findByEmail to retrieve the user by email and then uses bcrypt.compare to compare the hashed stored password with the supplied password.
+ */
+
+ export const comparePassword = async(email:string, supplied_password:string):Promise<UnitUser | null> => {
+  
+   //get user data by email
+   const user = await findByEmail(email);
+
+   if(user){
+      const decryptPassword = await bcrypt.compare(supplied_password, user.password);        
+      
+      if(!decryptPassword){
+        return null;
+      }
+   }
 
   return user;
  }
