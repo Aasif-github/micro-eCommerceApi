@@ -1,22 +1,22 @@
 import express, { Request, Response, Router } from 'express';
-import {StatusCodes} from "http-status-codes"
+import { StatusCodes } from "http-status-codes"
 import * as database from './user.database';
 import { User, UnitUser } from './user.interface';
 
 export const userRouter = express.Router();
 
-userRouter.get('/getUser', async(req:Request, res:Response) => {
-    
+userRouter.get('/getUser', async (req: Request, res: Response) => {
+
     try {
-        const users = await database.loadUsers();    
-        return res.status(200).send({'msg':users})
+        const users = await database.loadUsers();
+        return res.status(200).send({ 'msg': users })
     } catch (error) {
         console.log(error)
-        return res.send(500).send({msg:error});
-    }    
+        return res.send(500).send({ msg: error });
+    }
 });
 
-userRouter.get('/:id', async(req:Request, res:Response) => {
+userRouter.get('/:id', async (req: Request, res: Response) => {
 
 })
 
@@ -45,57 +45,119 @@ Response
     }
 }
 ```
-*/ 
-userRouter.post('/registration', async(req:Request, res:Response) => {
-    try{
+*/
+userRouter.post('/registration', async (req: Request, res: Response) => {
+    try {
         const { username, email, password } = req.body;
 
-        if(!username || !email || !password){
+        if (!username || !email || !password) {
             return res.status(StatusCodes.BAD_REQUEST)
-            .json({error : `Please provide all the required parameters..`});
+                .json({ error: `Please provide all the required parameters..` });
         }
 
         const user = await database.findByEmail(email);
-        
+
         if (user) {
-            return res.status(StatusCodes.BAD_REQUEST).json({error : `This email has already been registered..`})
+            return res.status(StatusCodes.BAD_REQUEST).json({ error: `This email has already been registered..` })
         }
 
         const newUser = await database.create(req.body);
-        return res.status(StatusCodes.CREATED).json({newUser});                    
-    }catch(error){
+        return res.status(StatusCodes.CREATED).json({ newUser });
+    } catch (error) {
         console.log(error)
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({error})
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error })
     }
 })
 
 
-userRouter.post('/checkPwd', async (req:Request, res:Response) => {
-    try{
-        const {email, password} = req.body;
+userRouter.post('/login', async (req: Request, res: Response) => {
+    try {
+        const { email, password } = req.body;
         console.log(email, password);
 
-        if(!email || !password){
+        if (!email || !password) {
             return res.status(StatusCodes.BAD_REQUEST)
-            .json({error : `Please provide all the required parameters..`});
+                .json({ error: `Please provide all the required parameters..` });
         }
 
         const user = await database.findByEmail(email);
-      
-        if(!user){
-            return res.status(StatusCodes.NOT_FOUND).json({error:`No User Found`});
+
+        if (!user) {
+            return res.status(StatusCodes.NOT_FOUND).json({ error: `No User Found` });
         }
 
         const isPasswordVarified = await database.comparePassword(email, password);
         //res.send(user);
         console.log(user);
 
-        if(isPasswordVarified){
-            return res.status(StatusCodes.OK).json({'msg':'Password Match'});
+        if (isPasswordVarified) {
+            return res.status(StatusCodes.OK).json({ 'msg': 'Password Match, Welcome' });
         }
-        return res.status(StatusCodes.FORBIDDEN).json({error:`Unauthoriresed`});
-    }catch(error){
+        return res.status(StatusCodes.FORBIDDEN).json({ error: `Unauthoriresed` });
+    } catch (error) {
         console.log(error)
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({error})
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error })
     }
-})
+});
+
+/*
+Request-URL:http://localhost:4000/user/update/94b281e7-9c0c-489b-8eef-25306dbb776d
+Request-Body:
+{
+    "username":"hari sado",
+    "email":"Hari@gmail.com",
+    "password":"12345"
+}
+*/
+userRouter.put('/update/:id', async (req: Request, res: Response) => {
+
+    try {
+        const id = req.params.id;
+        let isUserExist = await database.findOne(id);
+
+        if(!isUserExist){
+            return res.status(StatusCodes.NOT_FOUND).json({'msg':'User Not Found'});
+        }
+
+        if (isUserExist) {
+
+            const { username, email, password } = req.body;
+
+            if (!username || !email || !password) {
+                return res.status(StatusCodes.BAD_GATEWAY).json({ 'msg': 'invalid fields.' });
+            }
+            // also match object keys from req body
+            //  const allowedType1: Array<string> = ['username','email', 'password'];
+
+            const allowedType = ['username', 'email', 'password'];
+
+            let updateValue = Object.keys(req.body);
+
+            const isKeyMatch = allowedType.every((type) => {
+                //console.log(type);
+                return updateValue.includes(type);
+            })
+            
+            // check inputtype type must be string
+            if( typeof username !== "string"|| 
+                typeof email !== "string"||
+                typeof password !== "string"){                                
+                return res.status(StatusCodes.BAD_REQUEST).json({'msg':'bad format'});
+            }
+            if (isKeyMatch) {
+                const updateUser = await database.update((req.params.id), req.body)
+
+                return res.status(StatusCodes.CREATED).json(updateUser);
+            }else{
+                return res.status(StatusCodes.NOT_ACCEPTABLE).json({'msg':'keys not match'});
+            }
+        } else {
+            return res.status(StatusCodes.NOT_FOUND);
+        }
+    } catch (error) {
+        console.log(error);
+        res.send(error);
+    }
+
+
+});

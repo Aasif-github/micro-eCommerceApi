@@ -132,3 +132,28 @@ export function saveUsers(){
 
   return user;
  }
+ 
+ export const update = async(id:string, updateValues:User):Promise<UnitUser | null> => {
+
+  const isUserExist = await findOne(id);
+  
+  if(!isUserExist){
+      return null;
+  }
+
+  //update user password
+  if(updateValues.password){
+      const salt = await bcrypt.genSalt(10);
+      const newPass =  await bcrypt.hash(updateValues.password, salt)
+
+      updateValues.password = newPass;
+  }
+  
+  users[id] = {
+    ...isUserExist,
+    ...updateValues
+  }
+
+  saveUsers()
+    return users[id];
+ }
