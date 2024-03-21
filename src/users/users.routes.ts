@@ -1,4 +1,4 @@
-import express, { Request, Response, Router } from 'express';
+import express, { Request, Response, Router, NextFunction } from 'express';
 import { StatusCodes } from "http-status-codes"
 import * as database from './user.database';
 import { User, UnitUser } from './user.interface';
@@ -138,7 +138,7 @@ userRouter.put('/update/:id', async (req: Request, res: Response) => {
                 return updateValue.includes(type);
             })
             
-            // check inputtype type must be string
+            // check inputtype type must be string (type narrow)
             if( typeof username !== "string"|| 
                 typeof email !== "string"||
                 typeof password !== "string"){                                
@@ -158,6 +158,26 @@ userRouter.put('/update/:id', async (req: Request, res: Response) => {
         console.log(error);
         res.send(error);
     }
-
-
 });
+
+userRouter.delete('/delete/:id', async(req:Request, res:Response) => {
+    
+    try {
+        // check for user_id is present or not
+        const user = await database.findOne(req.params.id);
+        console.log(user);
+
+        if(!user){
+            return res.status(StatusCodes.NOT_FOUND).json({'err':"No user found"})                
+        }    
+
+        const isDeleted = await database.deleteUser(user.id);
+      
+        if(isDeleted){
+            return res.status(StatusCodes.OK).json({'msg':"User Delete Successfully"});                
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({'err':error});           
+    }    
+})

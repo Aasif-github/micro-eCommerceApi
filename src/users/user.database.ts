@@ -157,3 +157,14 @@ export function saveUsers(){
   saveUsers()
     return users[id];
  }
+
+ export const deleteUser = async(user_id:string):Promise<null | void> => {
+  
+  if(user_id){
+    delete users[user_id];
+  }
+  
+  saveUsers();
+
+  return null;
+ }
